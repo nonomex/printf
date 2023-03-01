@@ -6,7 +6,7 @@
 /*   By: aammirat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 17:51:57 by aammirat          #+#    #+#             */
-/*   Updated: 2023/03/01 11:24:07 by aammirat         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:06:29 by aammirat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static	int	launch(char c, va_list pa)
 		write(1, &c, 1);
 		return (1);
 	}
-	return (0);
+	return (-1);
 }
 
 int	ft_printf(const char *str, ...)
@@ -44,20 +44,20 @@ int	ft_printf(const char *str, ...)
 		return (-1);
 	va_start(pa, str);
 	end = 0;
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '%' && str[i + 1])
 		{
-			end += launch(str[i + 1], pa);
-			i++;
+			end += launch(str[i++ + 1], pa);
 		}
-		else if (str[i] != '%')
+		else if (str[i] == '%')
+			return (-1);
+		else
 		{
 			write(1, &str[i], 1);
 			end++;
 		}
-		i++;
 	}
 	va_end(pa);
 	return (end);
